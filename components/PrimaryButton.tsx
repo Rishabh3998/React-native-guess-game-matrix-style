@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   buttonOuterContainer: {
     borderColor: matrixGreenHex,
-    borderWidth: 1,
+    borderWidth: 2,
   },
   buttonInnerContainer: {
     paddingHorizontal: 15,

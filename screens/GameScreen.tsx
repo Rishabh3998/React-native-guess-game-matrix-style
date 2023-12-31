@@ -1,12 +1,14 @@
 import { blackHex, matrixGreenHex } from "../constants/constants";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert, FlatList } from "react-native";
 import { generateRandomNumber } from "../utils/helpers";
 import { useEffect, useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
+import { Ionicons } from "@expo/vector-icons";
+import GuessList from "../components/GuessList";
 
 const INITIAL_STATE = {
   minimumBoundary: 1,
-  maximumBoundary: 20,
+  maximumBoundary: 100,
 };
 
 const GameScreen = ({ enteredNumber, setRounds, setGameOver }: any) => {
@@ -16,6 +18,7 @@ const GameScreen = ({ enteredNumber, setRounds, setGameOver }: any) => {
     Number(enteredNumber)
   );
   const [currentGuess, setCurrentGuess] = useState<number>(initialGuess);
+  const [guessList, setGuessList] = useState([]);
 
   useEffect(() => {
     if (currentGuess === enteredNumber) {
@@ -46,6 +49,7 @@ const GameScreen = ({ enteredNumber, setRounds, setGameOver }: any) => {
       );
       setCurrentGuess(newGuess);
       setRounds((prev: number) => prev + 1);
+      setGuessList((prev): any => [...prev, currentGuess]);
     } else {
       const newGuess = generateRandomNumber(
         currentGuess,
@@ -54,6 +58,7 @@ const GameScreen = ({ enteredNumber, setRounds, setGameOver }: any) => {
       );
       setCurrentGuess(newGuess);
       setRounds((prev: number) => prev + 1);
+      setGuessList((prev): any => [...prev, currentGuess]);
     }
   };
 
@@ -67,15 +72,25 @@ const GameScreen = ({ enteredNumber, setRounds, setGameOver }: any) => {
           style={styles.controllers}
           onPress={() => generateNextGuess("lower")}
         >
-          -
+          <Ionicons name="remove" size={20} />
         </PrimaryButton>
         <PrimaryButton
           color={matrixGreenHex}
           style={styles.controllers}
           onPress={() => generateNextGuess("higher")}
         >
-          +
+          <Ionicons name="add" size={20} />
         </PrimaryButton>
+      </View>
+      <View style={styles.listOuterContainer}>
+        <FlatList
+          data={guessList}
+          renderItem={(itemData) => <GuessList itemData={itemData} />}
+          keyExtractor={(item) => {
+            return item;
+          }}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -86,8 +101,12 @@ export default GameScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: "50%",
+    paddingTop: "10%",
     alignItems: "center",
+  },
+  listOuterContainer: {
+    flex: 1,
+    margin: 30,
   },
   title: {
     color: matrixGreenHex,

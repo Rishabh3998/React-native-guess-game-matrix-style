@@ -20,7 +20,7 @@ const StartGameScreen = ({ showGameScreen }: any) => {
     if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
       Alert.alert(
         "Invalid number!",
-        "Number should be in the range of 1 to 20",
+        "Number should be in the range of 1 to 99",
         [{ text: "okay", style: "cancel", onPress: handleReset }]
       );
       return;
@@ -30,7 +30,7 @@ const StartGameScreen = ({ showGameScreen }: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Enter a number between 1 to 20</Text>
+      <Text style={styles.heading}>Enter a number between 1 to 99</Text>
       <TextInput
         selectionColor={matrixGreenHex}
         style={styles.inputContainer}
